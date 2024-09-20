@@ -1,13 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
 
-@Component({
-  selector: 'app-example',
-  template: '<p>Count: {{ count() }}</p>'
-})
-export class ExampleComponent {
-  count = signal(0);
-
-  increment() {
-    this.count.update(val => val + 1);
-  }
-}
+bootstrapApplication(AppComponent)
+  .catch(err => console.error(err));
