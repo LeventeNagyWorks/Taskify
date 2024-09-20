@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <li class="h-16 flex items-center justify-between p-2 border rounded-lg hover:bg-indigo-300 selection:bg-indigo-600 selection:text-zinc-100 duration-500"
+    <li class="h-16 flex items-center justify-between p-2 rounded-lg hover:bg-indigo-300 selection:bg-indigo-600 selection:text-zinc-100 duration-500"
         [ngClass]="{'bg-indigo-100': task.completed}">
         <div class="flex items-center">
             <label class="flex gap-4 items-center cursor-pointer">
