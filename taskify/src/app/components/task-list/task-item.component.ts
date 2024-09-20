@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
                 <span class="font-semibold" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
             </label>
         </div>
-        <button *ngIf="!task.completed" (click)="onDelete()" class="px-2 py-1 bg-red-500 text-white rounded-lg select-none">
+        <button *ngIf="!task.completed" (click)="onDelete()" class="px-2 py-1 bg-red-500 hover:bg-red-600 duration-500 text-white rounded-lg select-none">
             Törölés
         </button>
     </li>
