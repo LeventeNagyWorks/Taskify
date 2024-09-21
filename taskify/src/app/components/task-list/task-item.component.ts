@@ -1,29 +1,38 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-task-item',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule],
   template: `
-    <li class="h-16 flex items-center justify-between p-2 rounded-lg hover:bg-indigo-300 selection:bg-indigo-600 selection:text-zinc-100 duration-500"
-        [ngClass]="{'bg-indigo-100': task.completed}">
-        <div class="flex items-center">
-            <label class="flex gap-4 items-center cursor-pointer">
-                <input type="checkbox" 
-                       [checked]="task.completed" 
-                       (change)="onToggle()" 
-                       class="form-checkbox h-5 w-5 flex justify-center items-center text-indigo-600 rounded focus:ring-indigo-600 border-gray-300">
-                <span class="font-semibold" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
-            </label>
+    <li class="h-fit flex flex-col items-center justify-center gap-4 p-2 rounded-lg hover:bg-indigo-300 selection:bg-indigo-600 selection:text-zinc-100 duration-500"
+        [ngClass]="{'text-zinc-500': task.completed}">
+        <div class="w-full flex items-center justify-between">
+          <div class="flex items-center">
+              <label class="py-1 flex gap-4 items-center cursor-pointer">
+                  <input type="checkbox" 
+                        [checked]="task.completed" 
+                        (change)="onToggle()" 
+                        class="form-checkbox h-5 w-5 flex justify-center items-center text-indigo-600 rounded focus:ring-indigo-600 border-gray-300">
+                  <span class="font-semibold" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
+              </label>
+          </div>
+          <button *ngIf="!task.completed" (click)="onDelete()" class="scale-[80%] w-10 h-10 px-[3px] py-[2px] bg-red-500 hover:bg-red-700 duration-500 text-white rounded-lg select-none">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
         </div>
-        <button *ngIf="!task.completed" (click)="onDelete()" class="px-2 py-1 bg-red-500 hover:bg-red-600 duration-500 text-white rounded-lg select-none">
-            Törölés
-        </button>
+        <div *ngIf="task.description !== null && task.description !== ''" class="w-full flex justify-start items-center gap-3 px-10">
+          <span class="w-2 h-2 bg-indigo-600 rounded-full" [ngClass]="{'bg-zinc-500': task.completed}"></span>
+          <p class="text-xl">{{task.description}}</p>
+        </div>
     </li>
   `
 })
 export class TaskItemComponent {
+  faTrash = faTrash;
   @Input() task: any;
   @Output() toggle = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();

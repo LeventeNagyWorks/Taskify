@@ -18,12 +18,12 @@ import { CommonModule } from '@angular/common';
         <div class="mb-4">
           <label for="title" class="block mb-2">Feladat címe:</label>
           <input type="text" id="title" formControlName="title" class="w-full p-2 border font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500">
-          <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="text-red-500 mt-1">
+          <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="text-red-500 mt-1 text-xl">
             A cím megadása kötelező!
           </div>
         </div>
         <div class="mb-4">
-          <label for="description" class="block mb-2">Leírás:</label>
+          <label for="description" class="block mb-2">Leírás (opcionális):</label>
           <textarea id="description" formControlName="description" class="w-full p-2 border font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500"></textarea>
         </div>
         <button 
