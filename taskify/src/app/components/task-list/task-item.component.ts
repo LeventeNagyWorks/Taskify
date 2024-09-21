@@ -20,7 +20,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
                   <span class="font-semibold" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
               </label>
           </div>
-          <button *ngIf="!task.completed" (click)="onDelete()" class="scale-[80%] w-10 h-10 px-[3px] py-[2px] bg-red-500 hover:bg-red-700 duration-500 text-white rounded-lg select-none">
+          <button *ngIf="!task.completed" (click)="onDelete()" class="scale-[80%] w-11 h-11 px-[4px] py-[4px] bg-red-500 hover:bg-red-700 duration-500 text-white rounded-lg select-none">
             <fa-icon [icon]="faTrash"></fa-icon>
           </button>
         </div>
