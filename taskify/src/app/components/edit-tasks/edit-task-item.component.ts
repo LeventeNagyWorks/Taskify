@@ -21,7 +21,7 @@ import { FormsModule } from '@angular/forms';
                     (change)="onToggle()"
                     class="form-checkbox h-5 w-5 flex justify-center items-center text-indigo-600 rounded focus:ring-indigo-600 border-gray-300">
               <span *ngIf="!isEditing" class="font-semibold" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
-              <input *ngIf="isEditing" [(ngModel)]="task.title" class="border px-2 py-1 outline-none font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600">
+              <input *ngIf="isEditing" [(ngModel)]="task.title" (keyup.enter)="onSubmitEdit()" class="border px-2 py-1 outline-none font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600">
             </label>
           </div>
           <button *ngIf="!isEditing" (click)="onEdit()" class="scale-[80%] w-11 h-11 px-[4px] py-[4px] bg-indigo-500 hover:bg-indigo-700 duration-500 text-white rounded-lg select-none">
@@ -37,7 +37,7 @@ import { FormsModule } from '@angular/forms';
         </div>
         <div *ngIf="isEditing" class="w-full flex justify-start items-center gap-3 px-10">
           <span class="w-2 h-2 bg-indigo-600 rounded-full" [ngClass]="{'bg-zinc-500': task.completed}"></span>
-          <textarea [(ngModel)]="task.description" class="w-full border px-2 py-1 outline-none font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600" placeholder="Add a description"></textarea>
+          <textarea [(ngModel)]="task.description" class="w-full border px-2 py-1 outline-none font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600" placeholder="Adj meg egy leírást" (keyup.enter)="onSubmitEdit()"></textarea>
         </div>
     </li>
   `
