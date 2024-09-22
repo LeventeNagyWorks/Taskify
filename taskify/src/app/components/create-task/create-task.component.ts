@@ -1,10 +1,23 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, AbstractControl, ValidatorFn, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { SuccessComponent } from '../success.component';
 import { BackButtonComponent } from '../back-btn.component';
 import { CommonModule } from '@angular/common';
 import { signal } from '@angular/core';
+
+function futureDateValidator(): ValidatorFn {
+  return (control: AbstractControl): {[key: string]: any} | null => {
+    const selectedDate = control.value;
+    if (!selectedDate || typeof selectedDate !== 'string') {
+      return null; // Don't validate if no date is selected
+    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const date = new Date(selectedDate);
+    return date >= today ? null : { 'pastDate': true };
+  };
+}
 
 @Component({
   selector: 'app-create-task',
@@ -42,6 +55,9 @@ import { signal } from '@angular/core';
             (focus)="isDueDateFocused = true"
             (blur)="isDueDateFocused = false"
             [class]="'w-full p-2 border-2 bg-transparent font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500 ' + (isDueDateFocused ? 'border-indigo-600' : 'border-black')">
+          <div *ngIf="taskForm.get('dueDate')?.errors?.['pastDate']" class="text-red-500 mt-1 text-xl">
+            Nem választhat a mai dátumnál korábbi időpontot. Kérem, válasszon egy jövőbeli dátumot.
+          </div>
         </div>
         <div class="mb-4">
           <label for="description" [class]="'block mb-2 font-semibold duration-500 ' + (isDescFocused ? 'text-indigo-600' : '')">Leírás (opcionális)</label>
@@ -76,8 +92,16 @@ export class CreateTaskComponent {
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
     description: [''],
-    dueDate: ['']
-  });  
+    dueDate: ['', futureDateValidator()]
+  });
+
+  dueDateValidator(control: FormControl) {
+    const dueDate = control.value;
+    if (dueDate && dueDate < new Date()) {
+      return { dueDateInvalid: true };
+    }
+    return null;
+  }
 
   formatDateForInput(date: Date | null): string {
     if (!date) return '';
