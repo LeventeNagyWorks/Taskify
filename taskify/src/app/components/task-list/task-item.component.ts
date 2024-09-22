@@ -17,7 +17,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
                         [checked]="task.completed" 
                         (change)="onToggle()" 
                         class="form-checkbox h-5 w-5 flex justify-center items-center text-indigo-600 rounded focus:ring-indigo-600 border-gray-300">
-                  <span class="font-semibold" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
+                  <span class="font-semibold py-2" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
               </label>
           </div>
           <button *ngIf="!task.completed" (click)="onDelete()" class="scale-[80%] w-11 h-11 px-[4px] py-[4px] bg-red-500 hover:bg-red-700 duration-500 text-white rounded-lg select-none">

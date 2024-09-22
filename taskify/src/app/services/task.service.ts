@@ -62,5 +62,12 @@ export class TaskService {
     return of(undefined);
   }
 
-  // Implement other methods for updating, deleting, and toggling tasks
+  editTask(task: Task): Observable<Task> {
+    const updatedTasks = this.tasks$.value.map(t => 
+      t.id === task.id ? task : t
+    );
+    this.tasks$.next(updatedTasks);
+    this.saveTasks(); // Assuming you have a method to save tasks to local storage or backend
+    return of(task);
+  }
 }

@@ -6,7 +6,7 @@ import { TaskService } from '../../services/task.service';
 import { EditTaskItemComponent } from './edit-task-item.component';
 import { Observable } from 'rxjs';
 
-interface Task {
+export interface Task {
   id: number;
   title: string;
   description: string;
@@ -26,8 +26,9 @@ interface Task {
       <div class="w-full max-w-[900px]">
         <ul class="flex flex-col gap-3 bg-slate-300 py-6 px-4 rounded-3xl shadow-2xl shadow-slate-500">
           <app-edit-task-item *ngFor="let task of tasks$ | async"
-                     [task]="task"
-                     (toggle)="toggleTask(task)">
+                    [task]="task"
+                    (toggle)="toggleTask(task)"
+                    (edit)="editTask($event)">
           </app-edit-task-item>
         </ul>
       </div>
@@ -44,5 +45,9 @@ export class EditTasksComponent implements OnInit {
 
   toggleTask(task: Task) {
     this.taskService.toggleTask(task.id).subscribe();
+  }
+
+  editTask(task: Task) {
+    this.taskService.editTask(task).subscribe();
   }
 }
