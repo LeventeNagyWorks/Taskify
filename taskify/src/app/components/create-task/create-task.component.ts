@@ -29,6 +29,16 @@ import { CommonModule } from '@angular/common';
           </div>
         </div>
         <div class="mb-4">
+          <label for="dueDate" [class]="'block mb-2 font-semibold duration-500 ' + (isDueDateFocused ? 'text-indigo-600' : '')">Due Date</label>
+          <input
+            type="date"
+            id="dueDate"
+            formControlName="dueDate"
+            (focus)="isDueDateFocused = true"
+            (blur)="isDueDateFocused = false"
+            [class]="'w-full p-2 border-2 bg-transparent font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500 ' + (isDueDateFocused ? 'border-indigo-600' : 'border-black')">
+        </div>
+        <div class="mb-4">
           <label for="description" [class]="'block mb-2 font-semibold duration-500 ' + (isDescFocused ? 'text-indigo-600' : '')">Leírás (opcionális)</label>
           <textarea 
             id="description" 
@@ -54,18 +64,24 @@ export class CreateTaskComponent {
 
   isTitleFocused: boolean = false;
   isDescFocused: boolean = false;
+  isDueDateFocused: boolean = false;
 
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
-    description: ['']
-  });
+    description: [''],
+    dueDate: ['']
+  });  
 
   onSubmit() {
     if (this.taskForm.valid) {
-      this.taskService.addTask(this.taskForm.value).subscribe(() => {
+      this.taskService.addTask({
+        ...this.taskForm.value,
+        dueDate: this.taskForm.value.dueDate ? new Date(this.taskForm.value.dueDate) : null
+      }).subscribe(() => {
         this.taskForm.reset();
         // You can add a success message or navigate to the task list here
       });
     }
   }
+  
 }

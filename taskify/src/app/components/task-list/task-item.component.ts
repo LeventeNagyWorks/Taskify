@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -7,6 +7,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-task-item',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule],
+  providers: [DatePipe],
   template: `
     <li class="h-fit flex flex-col items-center justify-center gap-4 p-2 rounded-lg hover:bg-indigo-300 selection:bg-indigo-600 selection:text-zinc-100 duration-500"
         [ngClass]="{'text-zinc-500': task.completed}">
@@ -17,12 +18,20 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
                         [checked]="task.completed" 
                         (change)="onToggle()" 
                         class="form-checkbox h-5 w-5 flex justify-center items-center text-indigo-600 rounded focus:ring-indigo-600 border-gray-300">
-                  <span class="font-semibold py-2" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
+                  <span class="font-semibold py-2 text-center flex justify-center items-center" [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
               </label>
           </div>
-          <button *ngIf="!task.completed" (click)="onDelete()" class="scale-[80%] w-11 h-11 px-[4px] py-[4px] bg-red-500 hover:bg-red-700 duration-500 text-white rounded-lg select-none">
-            <fa-icon [icon]="faTrash"></fa-icon>
-          </button>
+          <div class="flex">
+            <div *ngIf="task.dueDate" class="w-fit flex justify-start items-center gap-3 px-10">
+              <!-- <span class="w-2 h-2 bg-indigo-600 rounded-full" [ngClass]="{'bg-zinc-500': task.completed}"></span> -->
+              <p class="text-xl font-semibold select-none">Határidő: {{ task.dueDate | date:'mediumDate' }}</p>
+            </div>
+
+            <button *ngIf="!task.completed" (click)="onDelete()" class="scale-[80%] w-11 h-11 px-[4px] py-[4px] bg-red-500 hover:bg-red-700 duration-500 text-white rounded-lg select-none">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </div>
+
         </div>
         <div *ngIf="task.description !== null && task.description !== ''" class="w-full flex justify-start items-center gap-3 px-10">
           <span class="w-2 h-2 bg-indigo-600 rounded-full" [ngClass]="{'bg-zinc-500': task.completed}"></span>
