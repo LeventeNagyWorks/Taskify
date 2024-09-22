@@ -1,15 +1,20 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
+import { SuccessComponent } from '../success.component';
 import { BackButtonComponent } from '../back-btn.component';
 import { CommonModule } from '@angular/common';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-create-task',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule , BackButtonComponent],
+  imports: [ReactiveFormsModule, CommonModule, BackButtonComponent, SuccessComponent],
   template: `
     <div class="h-full min-h-full w-full flex flex-col items-center justify-start p-4">
+
+      <app-success *ngIf="showSuccess()" (close)="onSuccessClose()"/>
+
       <div class="w-full h-20 flex justify-start items-center">
         <app-back-button [route]="'/'"></app-back-button>
       </div>
@@ -66,6 +71,8 @@ export class CreateTaskComponent {
   isDescFocused: boolean = false;
   isDueDateFocused: boolean = false;
 
+  showSuccess = signal(false);
+
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
     description: [''],
@@ -77,7 +84,10 @@ export class CreateTaskComponent {
     const d = new Date(date);
     return d.toISOString().split('T')[0];
   }
-  
+
+  onSuccessClose() {
+    this.showSuccess.set(false);
+  }
 
   onSubmit() {
     if (this.taskForm.valid) {
@@ -86,7 +96,7 @@ export class CreateTaskComponent {
         dueDate: this.taskForm.value.dueDate ? new Date(this.taskForm.value.dueDate) : null
       }).subscribe(() => {
         this.taskForm.reset();
-        // You can add a success message or navigate to the task list here
+        this.showSuccess.set(true);
       });
     }
   }
