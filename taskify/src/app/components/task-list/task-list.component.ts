@@ -27,6 +27,9 @@ interface Task {
                      (toggle)="toggleTask(task)"
                      (delete)="deleteTask(task)">
           </app-task-item>
+          <li *ngIf="(tasks$ | async)?.length === 0">
+            Jelenleg nincs egy teendője sem.
+          </li>
         </ul>
       </div>
     </div>

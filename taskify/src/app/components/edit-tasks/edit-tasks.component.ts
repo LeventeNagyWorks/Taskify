@@ -32,6 +32,9 @@ export interface Task {
                     (toggle)="toggleTask(task)"
                     (edit)="editTask($event)">
           </app-edit-task-item>
+          <li *ngIf="(tasks$ | async)?.length === 0">
+            Jelenleg nincs egy teendője sem.
+          </li>
         </ul>
       </div>
     </div>
