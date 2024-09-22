@@ -14,17 +14,29 @@ import { CommonModule } from '@angular/common';
         <app-back-button [route]="'/'"></app-back-button>
       </div>
       <h2 class="select-none font-semibold text-[50px] text-indigo-500 mb-24">Új feladat létrehozása</h2>
-      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="w-full max-w-2xl">
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="w-full max-w-3xl bg-slate-300 py-10 px-10 rounded-3xl shadow-2xl shadow-slate-500">
         <div class="mb-4">
-          <label for="title" class="block mb-2">Feladat címe:</label>
-          <input type="text" id="title" formControlName="title" class="w-full p-2 border font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500">
+          <label for="title" [class]="'block mb-2 font-semibold duration-500 ' + (isTitleFocused ? 'text-indigo-600' : '')">Feladat címe</label>
+          <input 
+            type="text" 
+            id="title" 
+            formControlName="title" 
+            (focus)="isTitleFocused = true" 
+            (blur)="isTitleFocused = false"
+            [class]="'w-full p-2 border-2 bg-transparent font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500 ' + (isTitleFocused ? 'border-indigo-600' : 'border-black')">
           <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="text-red-500 mt-1 text-xl">
             A cím megadása kötelező!
           </div>
         </div>
         <div class="mb-4">
-          <label for="description" class="block mb-2">Leírás (opcionális):</label>
-          <textarea id="description" formControlName="description" class="w-full p-2 border font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500"></textarea>
+          <label for="description" [class]="'block mb-2 font-semibold duration-500 ' + (isDescFocused ? 'text-indigo-600' : '')">Leírás (opcionális)</label>
+          <textarea 
+            id="description" 
+            formControlName="description" 
+            (focus)="isDescFocused = true" 
+            (blur)="isDescFocused = false"
+            [class]="'w-full p-2 border-2 bg-transparent font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500 ' + (isDescFocused ? 'border-indigo-600' : 'border-black')">
+          </textarea>
         </div>
         <button 
           type="submit" [disabled]="taskForm.invalid" 
@@ -39,6 +51,9 @@ import { CommonModule } from '@angular/common';
 export class CreateTaskComponent {
   private fb = inject(FormBuilder);
   private taskService = inject(TaskService);
+
+  isTitleFocused: boolean = false;
+  isDescFocused: boolean = false;
 
   taskForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
