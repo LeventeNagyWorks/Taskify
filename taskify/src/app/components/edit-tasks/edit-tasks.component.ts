@@ -32,7 +32,7 @@ export interface Task {
                     (toggle)="toggleTask(task)"
                     (edit)="editTask($event)">
           </app-edit-task-item>
-          <li *ngIf="(tasks$ | async)?.length === 0">
+          <li *ngIf="(tasks$ | async)?.length === 0" class="select-none">
             Jelenleg nincs egy teendője sem.
           </li>
         </ul>
