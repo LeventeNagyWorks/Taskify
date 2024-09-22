@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { EditTaskItemComponent } from './edit-task-item.component';
 import { Observable } from 'rxjs';
+import Scrollbar from 'smooth-scrollbar';
 
 export interface Task {
   id: number;
@@ -25,7 +26,7 @@ export interface Task {
       </div>
       <h2 class="select-none font-semibold text-[50px] text-indigo-500 mb-24">Feladatok Szerkesztése</h2>
       <div class="w-full max-w-[900px]">
-        <ul class="flex flex-col gap-3 bg-slate-300 py-6 px-4 rounded-3xl shadow-2xl shadow-slate-500">
+        <ul id="list" class="lg:max-h-[580px] overflow-auto flex flex-col gap-3 bg-slate-300 py-6 px-4 rounded-3xl shadow-2xl shadow-slate-500">
           <app-edit-task-item *ngFor="let task of tasks$ | async"
                     [task]="task"
                     (toggle)="toggleTask(task)"
@@ -42,6 +43,7 @@ export class EditTasksComponent implements OnInit {
 
   ngOnInit() {
     this.tasks$ = this.taskService.getTasks();
+    Scrollbar.init(document.querySelector('#list') as HTMLElement);
   }
 
   toggleTask(task: Task) {

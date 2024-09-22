@@ -4,6 +4,7 @@ import { TaskService } from '../../services/task.service';
 import { TaskItemComponent } from './task-item.component';
 import { Observable } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import Scrollbar from 'smooth-scrollbar';
 
 interface Task {
   id: number;
@@ -17,10 +18,10 @@ interface Task {
   standalone: true,
   imports: [CommonModule, RouterLink, TaskItemComponent],
   template: `
-    <div class="h-fullmin-h-full w-full flex flex-col items-center p-4">
+    <div class="h-full min-h-full w-full flex flex-col items-center p-4">
       <h2 class="select-none font-semibold text-[50px] text-indigo-500 mt-8 mb-24">Feladatok</h2>
       <div class="w-full max-w-[900px]">
-        <ul class="flex flex-col gap-3 bg-slate-300 py-6 px-4 rounded-3xl shadow-2xl shadow-slate-500">
+        <ul id="list" class="max-h-[650px] overflow-auto flex flex-col gap-3 bg-slate-300 py-6 px-4 rounded-3xl shadow-2xl shadow-slate-500">
           <app-task-item *ngFor="let task of tasks$ | async"
                      [task]="task"
                      (toggle)="toggleTask(task)"
@@ -37,6 +38,7 @@ export class TasksComponent implements OnInit {
 
   ngOnInit() {
     this.tasks$ = this.taskService.getTasks();
+    Scrollbar.init(document.querySelector('#list') as HTMLElement);
   }
 
   toggleTask(task: Task) {

@@ -2,12 +2,20 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { registerLocaleData } from '@angular/common';
+import localeHu from '@angular/common/locales/hu';
+import { LOCALE_ID } from '@angular/core';
+
+registerLocaleData(localeHu);
 
 @Component({
   selector: 'app-task-item',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    { provide: LOCALE_ID, useValue: 'hu' }
+  ],
   template: `
     <li class="h-fit flex flex-col items-center justify-center gap-4 p-2 rounded-lg hover:bg-indigo-300 selection:bg-indigo-600 selection:text-zinc-100 duration-500"
         [ngClass]="{'text-zinc-500': task.completed}">
@@ -24,7 +32,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
           <div class="flex">
             <div *ngIf="task.dueDate" class="w-fit flex justify-start items-center gap-3 px-10">
               <!-- <span class="w-2 h-2 bg-indigo-600 rounded-full" [ngClass]="{'bg-zinc-500': task.completed}"></span> -->
-              <p class="text-xl font-semibold select-none">Határidő: {{ task.dueDate | date:'mediumDate' }}</p>
+              <p class="text-xl font-semibold select-none">Határidő: {{ task.dueDate | date:'yyyy. MMMM d.':'':'hu' }}</p>
             </div>
 
             <button *ngIf="!task.completed" (click)="onDelete()" class="scale-[80%] w-11 h-11 px-[4px] py-[4px] bg-red-500 hover:bg-red-700 duration-500 text-white rounded-lg select-none">

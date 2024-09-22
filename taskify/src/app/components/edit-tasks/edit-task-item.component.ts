@@ -4,12 +4,20 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from '@angular/forms';
 import { Task } from './edit-tasks.component';
+import { registerLocaleData } from '@angular/common';
+import localeHu from '@angular/common/locales/hu';
+import { LOCALE_ID } from '@angular/core';
+
+registerLocaleData(localeHu);
 
 @Component({
   selector: 'app-edit-task-item',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule, FormsModule],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    { provide: LOCALE_ID, useValue: 'hu' }
+  ],
   template: `
     <li [class]="'h-fit flex flex-col items-center justify-center gap-4 p-2 rounded-lg selection:bg-indigo-600 selection:text-zinc-100 duration-500 ' + (isEditing ? '' : 'hover:bg-indigo-300')"
         [ngClass]="{'text-zinc-500': task.completed}"
@@ -34,13 +42,14 @@ import { Task } from './edit-tasks.component';
           <div class="flex">
             <div class="w-fit flex justify-between items-center gap-3 px-10">
               <div class="flex items-center gap-3">
-                <p *ngIf="!isEditing" [ngClass]="{'text-zinc-500': task.completed}" class="text-xl font-semibold select-none">
-                  Határidő: {{ task.dueDate | date:'mediumDate' }}
+                <p *ngIf="!isEditing && task.dueDate" [ngClass]="{'text-zinc-500': task.completed}" class="text-xl font-semibold select-none">
+                  Határidő: {{ task.dueDate | date:'yyyy. MMMM d.':'':'hu' }}
                 </p>
                 <input 
                   *ngIf="isEditing" 
                   type="date" 
-                  [(ngModel)]="task.dueDate" 
+                  [ngModel]="formatDateForInput(task.dueDate)"
+                  (ngModelChange)="task.dueDate = $event"
                   (focus)="isDueDateFocused = true"
                   (blur)="isDueDateFocused = false"
                   [class]="'px-2 py-1 border-2 bg-transparent font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500 ' + (isDueDateFocused ? 'border-indigo-600' : 'border-black')">
@@ -95,6 +104,11 @@ export class EditTaskItemComponent {
     this.isEditing = !this.isEditing;
   }
 
+  formatDateForInput(date: Date | undefined | null): string {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  }
 
   onSubmitEdit() {
     if (this.task.title.trim() !== '') {
