@@ -45,7 +45,7 @@ import { CommonModule } from '@angular/common';
             formControlName="description" 
             (focus)="isDescFocused = true" 
             (blur)="isDescFocused = false"
-            [class]="'w-full p-2 border-2 bg-transparent font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500 ' + (isDescFocused ? 'border-indigo-600' : 'border-black')">
+            [class]="'max-h-[180px] w-full p-2 border-2 bg-transparent font-semibold rounded-lg focus:text-indigo-600 caret-indigo-600 outline-none duration-500 ' + (isDescFocused ? 'border-indigo-600' : 'border-black')">
           </textarea>
         </div>
         <button 
