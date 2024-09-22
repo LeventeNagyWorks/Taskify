@@ -11,9 +11,9 @@ import { Task } from './edit-tasks.component';
   imports: [CommonModule, FontAwesomeModule, FormsModule],
   providers: [DatePipe],
   template: `
-    <li class="h-fit flex flex-col items-center justify-center gap-4 p-2 rounded-lg hover:bg-indigo-300 selection:bg-indigo-600 selection:text-zinc-100 duration-500"
+    <li [class]="'h-fit flex flex-col items-center justify-center gap-4 p-2 rounded-lg selection:bg-indigo-600 selection:text-zinc-100 duration-500 ' + (isEditing ? '' : 'hover:bg-indigo-300')"
         [ngClass]="{'text-zinc-500': task.completed}"
-        [ngClass]="{'bg-indigo-300': isEditing}">
+        [ngClass]="{'bg-slate-100': isEditing}">
         <div class="w-full flex items-center justify-between">
           <div class="flex items-center">
             <label class="py-1 flex gap-4 items-center cursor-pointer">
